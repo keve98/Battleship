@@ -4,35 +4,29 @@ package com.example.Battleship.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_entity")
 public class UserEntity {
 
     @Id
-    @SequenceGenerator(name="UserSequence", sequenceName="sequserid", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="UserSequence")
-    @Column(name = "id")
-    private Long Id;
-
     @Column(name = "player_name")
     private String player_name;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "isAdmin")
-    private boolean isAdmin;
+    @Column(name = "role")
+    private String role;
 
 
 
-    public UserEntity(Long id, String player_name, String password, boolean isAdmin) {
-        Id = id;
+    public UserEntity(Long id, String player_name, String password, String role) {
         this.player_name = player_name;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.role = role;
     }
 
-    public Long getId() {
-        return Id;
+    public UserEntity() {
+
     }
 
     public String getPlayer_name() {
@@ -51,11 +45,11 @@ public class UserEntity {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setAdmin(String role) {
+        this.role = role;
     }
 }

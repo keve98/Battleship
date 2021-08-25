@@ -7,9 +7,7 @@ import javax.persistence.*;
 @Table(name = "user_data")
 public class UserData {
 
-    @Column(name = "user_id")
-    private Long user_id;
-
+    @Id
     @Column(name = "player_name")
     private String player_name;
 
@@ -26,17 +24,12 @@ public class UserData {
     private String email;
 
 
-    public UserData(Long user_id, String player_name, String name, String address, String phone, String email) {
-        this.user_id = user_id;
+    public UserData(String player_name, String name, String address, String phone, String email) {
         this.player_name = player_name;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
-    }
-
-    public Long getUser_id() {
-        return user_id;
     }
 
     public String getPlayer_name() {
