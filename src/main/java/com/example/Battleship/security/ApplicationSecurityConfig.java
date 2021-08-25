@@ -37,7 +37,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/users/*").hasRole("ADMIN")
         ;
-
     }
 
     @Bean
