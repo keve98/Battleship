@@ -1,40 +1,52 @@
 package com.example.Battleship.entities;
 
 
+
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_entity")
 public class UserEntity {
 
     @Id
-    @Column(name = "player_name")
-    private String player_name;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roleEntities;
 
 
-
-    public UserEntity(Long id, String player_name, String password, String role) {
-        this.player_name = player_name;
-        this.password = password;
-        this.role = role;
+    public Long getId() {
+        return id;
     }
 
-    public UserEntity() {
-
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getPlayer_name() {
-        return player_name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPlayer_name(String player_name) {
-        this.player_name = player_name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -45,11 +57,19 @@ public class UserEntity {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setAdmin(String role) {
-        this.role = role;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<RoleEntity> getRoles() {
+        return roleEntities;
+    }
+
+    public void setRoles(Set<RoleEntity> roleEntities) {
+        this.roleEntities = roleEntities;
     }
 }

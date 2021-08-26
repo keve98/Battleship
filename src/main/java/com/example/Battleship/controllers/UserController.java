@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -30,15 +29,15 @@ public class UserController {
         return ("<h1>Welcome</h1>");
     }
 
-    @PreAuthorize("ADMIN")
-    @GetMapping("/users")
+
+    @GetMapping("/admin")
     public ResponseEntity<List<UserEntity>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 
     @GetMapping("/user/{name}")
-    public ResponseEntity<Optional<UserEntity>> getUserByName(@PathVariable String name){
+    public ResponseEntity<UserEntity> getUserByName(@PathVariable String name){
         return new ResponseEntity<>(userService.getEntity(name), HttpStatus.OK);
     }
 

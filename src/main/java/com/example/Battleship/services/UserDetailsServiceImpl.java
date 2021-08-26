@@ -1,47 +1,58 @@
 package com.example.Battleship.services;
 
 
+import com.example.Battleship.entities.RoleEntity;
 import com.example.Battleship.entities.UserEntity;
 import com.example.Battleship.repositories.UserRepository;
+import com.example.Battleship.security.MyUserDetails;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
-class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserService userService;
 
 
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<UserEntity> optionalUser = userRepository.findByName(userName);
 
-        if(optionalUser.isPresent()) {
-            UserEntity users = optionalUser.get();
 
-           /* List<String> roleList = new ArrayList<String>();
-            roleList.add("ADMIN");
-            roleList.add("USER");*/
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userService.getEntity(username);
+        MyUserDetails myUserDetails = new MyUserDetails(user);
+        List<GrantedAuthority> authorities = (List<GrantedAuthority>) myUserDetails.getAuthorities();
 
-            return User.builder()
-                    .username(users.getPlayer_name())
-                    //change here to store encoded password in db
-                    .password(bCryptPasswordEncoder.encode(users.getPassword()) )
-                    .roles(users.getRole().toUpperCase())
-                    .build();
-        } else {
-            throw new UsernameNotFoundException("User Name is not Found");
-        }
+        return buildUserForAuthentication(user, authorities);
     }
-}
+
+   /* private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
+        Set<GrantedAuthority> roles = new HashSet<>();
+        for (Role role : userRoles) {
+            roles.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
+        return grantedAuthorities;
+    }*/
+
+    private UserDetails buildUserForAuthentication(UserEntity user, List<GrantedAuthority> authorities) {
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                user.isEnabled(), true, true, true, authorities);
+    }}

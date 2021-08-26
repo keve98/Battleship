@@ -8,16 +8,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
+//@Primary
 public interface UserRepository extends CrudRepository<UserEntity, Long>{
 
-    @Query(value ="select u from UserEntity u order by u.player_name")
+    @Query(value ="select u from UserEntity u order by u.username")
     List<UserEntity> findAll();
 
 
-    @Query(value = "select m from UserEntity m where m.player_name like :#{#txt}")
-    Optional<UserEntity> findByName(@Param("txt") String txt);
+    @Query(value = "select m from UserEntity m where m.username like :#{#txt}")
+    UserEntity findByName(@Param("txt") String txt);
 
 }

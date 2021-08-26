@@ -1,32 +1,34 @@
 package com.example.Battleship.services;
 
 import com.example.Battleship.entities.UserEntity;
+import com.example.Battleship.repositories.RoleRepository;
 import com.example.Battleship.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
 
     public List<UserEntity> getAllUsers(){
         return userRepository.findAll();
     }
 
-    public Optional<UserEntity> getEntity(String name){
+    public UserEntity getEntity(String name){
         return userRepository.findByName(name);
     }
 
