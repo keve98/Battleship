@@ -25,12 +25,7 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
-
-
 
 
     @Override
@@ -42,15 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return buildUserForAuthentication(user, authorities);
     }
-
-   /* private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        for (Role role : userRoles) {
-            roles.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
-        return grantedAuthorities;
-    }*/
 
     private UserDetails buildUserForAuthentication(UserEntity user, List<GrantedAuthority> authorities) {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),

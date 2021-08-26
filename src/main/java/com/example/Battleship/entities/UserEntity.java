@@ -1,8 +1,5 @@
 package com.example.Battleship.entities;
 
-
-
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -72,4 +69,5 @@ public class UserEntity {
     public void setRoles(Set<RoleEntity> roleEntities) {
         this.roleEntities = roleEntities;
     }
+
 }

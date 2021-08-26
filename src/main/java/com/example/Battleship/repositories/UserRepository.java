@@ -10,7 +10,6 @@ import org.springframework.stereotype.*;
 import java.util.List;
 
 @Repository
-//@Primary
 public interface UserRepository extends CrudRepository<UserEntity, Long>{
 
     @Query(value ="select u from UserEntity u order by u.username")
@@ -19,5 +18,7 @@ public interface UserRepository extends CrudRepository<UserEntity, Long>{
 
     @Query(value = "select m from UserEntity m where m.username like :#{#txt}")
     UserEntity findByName(@Param("txt") String txt);
+
+
 
 }
