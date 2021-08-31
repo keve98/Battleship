@@ -1,0 +1,14 @@
+  
+<h1>
+    Player list
+</h1>
+<div>
+    <div id="players"></div>
+    <table>
+    <td>
+        <tr *ngFor = "let user of users">
+           [{{user.id}}] {{user.username}} {{user.name}} {{user.email}} {{user.address}} {{user.phone}}
+        </tr>
+    </td>
+    </table>
+</div>
