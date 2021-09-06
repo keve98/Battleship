@@ -11,7 +11,7 @@ export class AdminComponent implements OnInit{
     constructor(private userService : UserService){}
 
     ngOnInit(): void {
-        throw new Error("Method not implemented.");
+       this.getUsers();
     }
 
     public getUsers():void{

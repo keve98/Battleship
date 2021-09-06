@@ -53,6 +53,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
+                .and().httpBasic().and().cors();
         ;
     }
 }
