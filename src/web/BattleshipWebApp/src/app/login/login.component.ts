@@ -24,23 +24,14 @@ export class LoginComponent{
     doLogin() : void{
         this.username = (<HTMLInputElement>document.getElementById('uname')).value;
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
+        console.log(this.username);
 
-        let resp = this.userService.login(this.username, this.password);
-        resp.subscribe(data => {
-          this.message = data;
-         this.router.navigate(["/admin"])
-        });
-        
-         /*   this.authenticationService.authenticationService(this.username, this.password).subscribe((result) => {
-                this.invalidLogin = false;
-                this.loginSuccess = true;
-                this.successMessage = 'Login Successful.';
-                this.router.navigate(['/']);
-              }, () => {
-                this.invalidLogin = true;
-                this.loginSuccess = false;
-            })
-        }*/
+        this.userService.login(this.username, this.password).subscribe(
+            (response: any)=>{
+                this.successMessage = "Authenticated successfully";
+            }
+        )
+             
         
     }
 }

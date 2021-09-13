@@ -44,7 +44,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+       /* http.csrf().disable().authorizeRequests()
                 .antMatchers("/admin/**", "/admin**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -53,7 +53,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
-                .and().httpBasic().and().cors();
-        ;
+                .and().httpBasic().and().cors();*/
+
+        http.httpBasic().disable();
+        http.authorizeRequests().anyRequest().authenticated();
+
     }
 }

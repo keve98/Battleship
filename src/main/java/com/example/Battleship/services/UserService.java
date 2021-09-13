@@ -6,6 +6,7 @@ import com.example.Battleship.repositories.RoleRepository;
 import com.example.Battleship.repositories.UserDataRepository;
 import com.example.Battleship.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class UserService {
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDataRepository = userDataRepository;
+
     }
 
     public UserEntity getEntity(String name){
@@ -36,6 +38,7 @@ public class UserService {
         return userDataRepository.findDataByName(name);
     }
     public List<Object> getUsersOnly(){return userDataRepository.findUsersOnly();}
+
 
 
 

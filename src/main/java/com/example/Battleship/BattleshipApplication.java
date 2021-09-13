@@ -26,4 +26,6 @@ public class BattleshipApplication {
 		model.put("content", "Hello World");
 		return model;
 	}
+
+
 }
