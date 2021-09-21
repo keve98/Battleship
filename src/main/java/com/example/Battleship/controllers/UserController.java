@@ -1,7 +1,9 @@
 package com.example.Battleship.controllers;
 
 
+import com.example.Battleship.entities.UserDataEntity;
 import com.example.Battleship.entities.UserEntity;
+import com.example.Battleship.entities.UserRole;
 import com.example.Battleship.services.UserDetailsServiceImpl;
 import com.example.Battleship.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +40,43 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/login")
-    public boolean login(@RequestBody UserEntity entity){
-        UserDetails user = userDetailsServiceImpl.loadUserByUsername(entity.getUsername());
-        return (user.getPassword().equals(entity.getPassword()));
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes="application/json")
+    public UserEntity login(@RequestBody UserEntity entity) throws Exception{
+        if(!userService.login(entity.getUsername(), entity.getPassword())){
+            throw new Exception("Bad credentials");
+        }
+
+        return entity;
 
     }
 
+    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes="application/json")
+    public UserDataEntity saveUser(@RequestBody UserDataEntity newData) throws Exception{
+        String username = newData.getUsername();
+        String password = newData.getPassword();
+
+        UserEntity userObj = null;
+
+        if(username != null && password != null){
+            userObj = userService.getEntity(username);
+        }
+
+        if(userObj != null){
+            throw new Exception("User with name '" + username +"' already exists!");
+        }
+
+        userService.saveUser(new UserEntity(username, password));
+        userService.saveUserData(newData);
+        userService.saveUserRole(new UserRole(newData.getId(), 1L));
+        return newData;
+
+       /* UserEntity userEntity = new UserEntity(newData.getUsername(), newData.getPassword());
+        UserRole userRole = new UserRole(newData.getId(), 1L);
+        userService.saveUser(userEntity);
+        userService.saveUserRole(userRole);
+        userService.saveUserData(newData);
+        return newData;*/
+    }
 
     @GetMapping("/admin")
     public ResponseEntity<List<Object>> getAllUsers(){

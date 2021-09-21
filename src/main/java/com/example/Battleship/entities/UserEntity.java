@@ -30,6 +30,17 @@ public class UserEntity {
     private Set<RoleEntity> roleEntities;
 
 
+    public UserEntity(String username, String password){
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
+    }
+
+    public UserEntity() {
+
+    }
+
+
     public Long getId() {
         return id;
     }
