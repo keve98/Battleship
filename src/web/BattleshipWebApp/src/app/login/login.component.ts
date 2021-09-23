@@ -2,12 +2,15 @@ import { Component, OnInit } from "@angular/core";
 import { UserService } from "../user_service";
 import { ActivatedRoute, Router } from '@angular/router';
 import  AuthService  from './auth.service';
+import { LoginUser } from "./login_user";
+
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent{
 
     username: string;
     password : string;
+    user = new LoginUser();
     message: any;
     errorMessage = 'Invalid Credentials';
     successMessage: string;
@@ -26,9 +29,12 @@ export class LoginComponent{
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
         console.log(this.username);
 
-        this.userService.login(this.username, this.password).subscribe(
-            (response: any)=>{
-                this.successMessage = "Authenticated successfully";
+        this.user.username = this.username;
+        this.user.password = this.password;
+
+        this.userService.login(this.user).subscribe(
+            (response: boolean)=>{
+                console.log("Authenticated successfully");
             }
         )
              

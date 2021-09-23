@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http'
 import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 import { UserData } from './user_data';
+import { LoginUser } from './login/login_user';
 
 @Injectable({
     providedIn: 'root'
@@ -22,21 +23,15 @@ export class UserService{
     }
 
 
-    public login(username:string, password:string):Observable<void>{
-       return this.http.post<void>(`${this.apiServerUrl}/login`, { username, password })
-       .pipe(map(user => {
-           localStorage.setItem('currentUser', JSON.stringify(user));
-           return user;
-       }));     
+    public login(user: LoginUser):Observable<any>{
+       return this.http.post<any>(`${this.apiServerUrl}/login`, user);     
     }
 
-    headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'});
 
     savaUserData(userData: UserData): Observable<any> {
-        return this.http.post<any>(`${this.apiServerUrl}/save`, userData, {headers: this.headers});
+        return this.http.post<any>(`${this.apiServerUrl}/save`, userData);
       }
     
-
 
     public getAllUsers():Observable<User[]>{
         return this.http.get<User[]>(`${this.apiServerUrl}/admin`);
