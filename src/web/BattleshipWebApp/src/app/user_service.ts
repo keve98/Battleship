@@ -30,16 +30,10 @@ export class UserService{
        }));     
     }
 
-    httpOptions = {
-        headers: new HttpHeaders({
-          'Accept': 'text/html',
-          'Content-Type': 'appliacation/json; charset=utf-8'
-        }),
-        responseType: 'text' as 'json'
-      };
+    headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'});
 
     savaUserData(userData: UserData): Observable<any> {
-        return this.http.post<any>(`${this.apiServerUrl}/save`, userData, this.httpOptions);
+        return this.http.post<any>(`${this.apiServerUrl}/save`, userData, {headers: this.headers});
       }
     
 

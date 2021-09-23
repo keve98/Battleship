@@ -26,11 +26,13 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
-                       UserDataRepository userDataRepository) {
+                       UserDataRepository userDataRepository,
+                       UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDataRepository = userDataRepository;
+        this.userRoleRepository = userRoleRepository;
 
     }
 

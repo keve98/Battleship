@@ -20,4 +20,6 @@ public interface UserDataRepository extends CrudRepository<UserDataEntity, Long>
     @Query(value = "select distinct d.username, d.name, d.address, d.phone, d.email from UserDataEntity d, UserEntity e, RoleEntity r\n" +
             "where r.name = 'USER' and d.username = e.username and e.id = r.id")
     List<Object> findUsersOnly();
+
+
 }

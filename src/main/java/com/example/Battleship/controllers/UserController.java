@@ -69,8 +69,9 @@ public class UserController {
         UserDataEntity newUserDataEntity = new UserDataEntity(newData.getUsername(), newData.getName(), newData.getPhone(), newData.getEmail(), newData.getAddress());
 
         userService.saveUser(newUserEntity);
+        newUserDataEntity.setId(newUserEntity.getId());
         userService.saveUserData(newUserDataEntity);
-        userService.saveUserRole(new UserRole(newData.getId(), 1L));
+        userService.saveUserRole(new UserRole(newUserEntity.getId(), 1L));
         return newUserDataEntity;
 
     }

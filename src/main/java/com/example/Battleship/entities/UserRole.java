@@ -8,8 +8,6 @@ import javax.persistence.*;
 public class UserRole {
 
     @Id
-    Long id;
-
     @Column(name = "user_id")
     public Long userid;
 

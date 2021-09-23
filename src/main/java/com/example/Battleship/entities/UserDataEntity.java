@@ -9,11 +9,12 @@ import javax.persistence.*;
 @Table(name = "user_data")
 public class UserDataEntity {
 
-    @Id
+
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Id
     @Column(name = "username")
     String username;
 
