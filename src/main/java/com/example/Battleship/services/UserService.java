@@ -60,7 +60,7 @@ public class UserService {
     public boolean login(String username, String password){
         UserEntity user = userRepository.findByName(username);
         String passwordtmp =  bCryptPasswordEncoder.encode(password);
-        if(user.getPassword() == passwordtmp) {
+        if(bCryptPasswordEncoder.matches(password, user.getPassword())) {
             return true;
         }else{
             return false;

@@ -41,12 +41,11 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes="application/json")
+    @PostMapping(value = "/login")
     public UserEntity login(@RequestBody UserEntity entity) throws Exception{
         if(!userService.login(entity.getUsername(), entity.getPassword())){
             throw new Exception("Bad credentials");
         }
-
         return entity;
 
     }
