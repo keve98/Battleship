@@ -1,6 +1,7 @@
 package com.example.Battleship.controllers;
 
 
+import com.example.Battleship.entities.UserAllData;
 import com.example.Battleship.entities.UserDataEntity;
 import com.example.Battleship.entities.UserEntity;
 import com.example.Battleship.entities.UserRole;
@@ -50,8 +51,8 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes="application/json")
-    public UserDataEntity saveUser(@RequestBody UserDataEntity newData) throws Exception{
+    @PostMapping(value = "/save")
+    public UserDataEntity saveUser(@RequestBody UserAllData newData) throws Exception{
         String username = newData.getUsername();
         String password = newData.getPassword();
 
@@ -65,17 +66,14 @@ public class UserController {
             throw new Exception("User with name '" + username +"' already exists!");
         }
 
-        userService.saveUser(new UserEntity(username, password));
-        userService.saveUserData(newData);
-        userService.saveUserRole(new UserRole(newData.getId(), 1L));
-        return newData;
+        UserEntity newUserEntity = new UserEntity(username, password);
+        UserDataEntity newUserDataEntity = new UserDataEntity(newData.getUsername(), newData.getName(), newData.getPhone(), newData.getEmail(), newData.getAddress());
 
-       /* UserEntity userEntity = new UserEntity(newData.getUsername(), newData.getPassword());
-        UserRole userRole = new UserRole(newData.getId(), 1L);
-        userService.saveUser(userEntity);
-        userService.saveUserRole(userRole);
-        userService.saveUserData(newData);
-        return newData;*/
+        userService.saveUser(newUserEntity);
+        userService.saveUserData(newUserDataEntity);
+        userService.saveUserRole(new UserRole(newData.getId(), 1L));
+        return newUserDataEntity;
+
     }
 
     @GetMapping("/admin")

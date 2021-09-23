@@ -1,46 +1,19 @@
 package com.example.Battleship.entities;
 
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_data")
-public class UserDataEntity {
+public class UserAllData {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
-    @Column(name = "username")
     String username;
-
-    @Column(name = "name")
     String name;
-
-    @Column(name = "phone")
     String phone;
-
-    @Column(name = "email")
     String email;
-
-    @Column(name = "address")
     String address;
+    String password;
 
-    public UserDataEntity(String username, String name, String phone, String email, String address) {
-        this.username = username;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-
-    }
-
-    public UserDataEntity() {
-
-    }
 
     public Long getId() {
         return id;
@@ -90,7 +63,13 @@ public class UserDataEntity {
         this.address = address;
     }
 
-    public String toString(){
-        return this.getUsername() + " : " + this.getName() +" : " + this.getAddress() +" : " + this.getEmail() +" : " + this.getPhone();
+    public String getPassword() {
+        return password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 }
