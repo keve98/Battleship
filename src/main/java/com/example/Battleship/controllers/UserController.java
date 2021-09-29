@@ -10,6 +10,9 @@ import com.example.Battleship.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,7 @@ public class UserController {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     public String username;
     public String password;
+    public UserEntity loggedInEntity;
 
 
     @Autowired
@@ -42,11 +46,14 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public UserEntity login(@RequestBody UserEntity entity) throws Exception{
+    public boolean login(@RequestBody UserEntity entity) throws Exception{
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            throw new Exception("Bad credentials");
+            throw new Exception("Authentication failed");
         }
-        return entity;
+        Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        loggedInEntity = entity;
+        return true;
 
     }
 
@@ -77,22 +84,26 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<List<Object>> getAllUsers(){
-        return new ResponseEntity<>(userService.getUsersOnly(), HttpStatus.OK);
+    public ResponseEntity<List<UserDataEntity>> getAllUsers() throws Exception {
+        if(isAdmin())
+            return new ResponseEntity<>(userService.getUsersOnly(), HttpStatus.OK);
+        throw new Exception("You don't have access to reach this page!");
     }
 
 
     @GetMapping("/user/{name}")
-    public ResponseEntity<String> getUserByUsername(@PathVariable String name){
-        boolean authenticated = SecurityContextHolder.getContext().getAuthentication().getName().equals(name);
+    public ResponseEntity<UserDataEntity> getUserByUsername(@PathVariable String name) throws Exception {
+        boolean authenticated = false;
+        if(loggedInEntity.getUsername().equals(name))
+            authenticated = true;
         if(authenticated || isAdmin()) {
             if(authenticated && isAdmin()){
-                return new ResponseEntity<>("Admins haven't got personal data in the database", HttpStatus.OK);
+                throw new Exception("Admins haven't got personal data in the database");
             }else {
-                return new ResponseEntity<>(userService.getUserData(name).toString(), HttpStatus.OK);
+                return new ResponseEntity<>(userService.getUserData(name), HttpStatus.OK);
             }
         }else{
-            return new ResponseEntity<>("You don't have access to reach this page!", HttpStatus.OK);
+            throw new Exception("You don't have access to reach this page!");
         }
     }
 

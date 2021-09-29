@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
-import { UserData } from "../user_data";
+import { User } from "../user";
 import { UserService } from "../user_service";
 
 @Component({ templateUrl: 'registration.component.html' })
 export class RegistrationComponent{
     
 
-    public user= new UserData();
+    public user= new User();
 
     constructor(private userService: UserService){}
 

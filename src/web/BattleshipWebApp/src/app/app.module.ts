@@ -7,14 +7,14 @@ import { AppComponent } from './app.component';
 import { UserService } from './user_service';
 import { LoginComponent } from './login';
 import { AdminComponent } from './admin';
-//import { PlayerComponent } from './player';
+import { PlayerComponent } from './player';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    AdminComponent//,
-   // PlayerComponent
+    AdminComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,

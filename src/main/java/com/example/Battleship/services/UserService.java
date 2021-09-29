@@ -44,7 +44,7 @@ public class UserService {
         return userDataRepository.findDataByName(name);
     }
 
-    public List<Object> getUsersOnly(){return userDataRepository.findUsersOnly();}
+    public List<UserDataEntity> getUsersOnly(){return userDataRepository.findUsersOnly();}
 
     public void saveUserData(UserDataEntity userDataEntity){
         userDataRepository.save(userDataEntity);
@@ -61,7 +61,7 @@ public class UserService {
 
     public boolean login(String username, String password){
         UserEntity user = userRepository.findByName(username);
-        String passwordtmp =  bCryptPasswordEncoder.encode(password);
+       // String passwordtmp =  bCryptPasswordEncoder.encode(password);
         if(bCryptPasswordEncoder.matches(password, user.getPassword())) {
             return true;
         }else{

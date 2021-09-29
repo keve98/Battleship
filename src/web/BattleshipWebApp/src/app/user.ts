@@ -1,11 +1,13 @@
 
 
-export interface User{
-    id: number,
-    name: string,
-    username: string,
-    password: string,
-    phone: string,
-    email: string,
-    address: string
+export class User{
+    id: number | undefined;
+    name: string | undefined;
+    username: string | undefined;
+    password: string | undefined;
+    phone: string | undefined;
+    email: string | undefined;
+    address: string | undefined;
+
+    constructor(){}
 }
