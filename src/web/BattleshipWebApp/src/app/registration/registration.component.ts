@@ -1,14 +1,15 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { User } from "../user";
 import { UserService } from "../user_service";
 
-@Component({ templateUrl: 'registration.component.html' })
+@Component({ templateUrl: 'registration.component.html'})
 export class RegistrationComponent{
     
 
     public user= new User();
 
-    constructor(private userService: UserService){}
+    constructor(private userService: UserService, private router : Router){}
 
     public save(): void{
         this.user.username = (<HTMLInputElement>document.getElementById('username')).value;
@@ -24,5 +25,4 @@ export class RegistrationComponent{
         );
 
     }
-
 }

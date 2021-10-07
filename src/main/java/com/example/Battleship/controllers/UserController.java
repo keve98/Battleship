@@ -12,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,7 +28,6 @@ public class UserController {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     public String username;
     public String password;
-    public UserEntity loggedInEntity;
 
 
     @Autowired
@@ -47,12 +44,14 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public boolean login(@RequestBody UserEntity entity) throws Exception{
+        System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
             throw new Exception("Authentication failed");
         }
         Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        loggedInEntity = entity;
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
         return true;
 
     }
@@ -87,14 +86,15 @@ public class UserController {
     public ResponseEntity<List<UserDataEntity>> getAllUsers() throws Exception {
         if(isAdmin())
             return new ResponseEntity<>(userService.getUsersOnly(), HttpStatus.OK);
-        throw new Exception("You don't have access to reach this page!");
+       throw new Exception("You don't have access to reach this page!");
     }
 
 
     @GetMapping("/user/{name}")
     public ResponseEntity<UserDataEntity> getUserByUsername(@PathVariable String name) throws Exception {
+        System.out.println("getuserbyname start");
         boolean authenticated = false;
-        if(loggedInEntity.getUsername().equals(name))
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals(name))
             authenticated = true;
         if(authenticated || isAdmin()) {
             if(authenticated && isAdmin()){
@@ -110,6 +110,7 @@ public class UserController {
     public boolean isAdmin(){
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
     }
+
 
 
 }

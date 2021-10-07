@@ -6,6 +6,8 @@ import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
 
+
+
 @Injectable({
     providedIn: 'root'
 })
@@ -15,24 +17,18 @@ export class LoginComponent{
     username: string;
     password : string;
     user = new LoginUser();
+    tmp: boolean = false;
 
     public currentUser: User = new User;
 
     constructor(private userService : UserService, private router:Router, private route: RouterModule, private authenticationService: AuthService){
         this.username = "";
         this.password = "";
+        console.log("logincomponent const");
     }
 
 
-    getUser(): void{
-        this.userService.getUserByUsername(this.username).subscribe(
-            (user: User) => {
-                this.currentUser = user;
-            }
-        )
-    }
-
-    doLogin() : void{
+    async doLogin(){
         this.username = (<HTMLInputElement>document.getElementById('uname')).value;
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
 
@@ -40,24 +36,34 @@ export class LoginComponent{
         this.user.password = this.password;
         this.userService.login(this.user)
         .subscribe(
-           (isValid: boolean) => {
+           (isValid) => {
+               console.log("login started");
                if(isValid){
                 sessionStorage.setItem('token', btoa(this.username + ':' + this.password));
+                console.log("login valid");
+                console.log(this.username);
+                this.userService.fillLoggedInUser(this.user);
+                this.tmp = true;
                }
-               else{
-                alert("Authentication failed.");
-               }
+                else{
+                    alert("bad credentials");
+                    console.log("login invalid");
+                    this.username = "";
+                    this.password = "";
+                    this.user.username = this.username;
+                    this.user.password = this.password;
+                }
            }
-        );        
+        ); 
+
+        
+       }
+
+
+       async doFunction(){
+            await this.doLogin();
+            await this.router.navigate([`/welcome`]);
+       }
+
     }
 
-    doFunction(): void{
-        this.doLogin();
-        this.getUser();
-        this.userService.fillLoggedInUser(this.currentUser);
-        this.router.navigate(['/player']);
-    }
-
-
-   
-}

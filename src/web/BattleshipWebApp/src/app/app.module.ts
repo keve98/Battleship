@@ -8,13 +8,15 @@ import { UserService } from './user_service';
 import { LoginComponent } from './login';
 import { AdminComponent } from './admin';
 import { PlayerComponent } from './player';
+import { PlayerwelcomeComponent } from './playerwelcome/playerwelcome.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AdminComponent,
-    PlayerComponent
+    PlayerComponent,
+    PlayerwelcomeComponent
   ],
   imports: [
     BrowserModule,

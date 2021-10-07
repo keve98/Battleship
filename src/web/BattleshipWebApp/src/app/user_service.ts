@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http'
 import { Router } from '@angular/router';
 
 import { LoginUser } from './login/login_user';
+import { PlayerwelcomeComponent } from './playerwelcome';
 
 @Injectable({
     providedIn: 'root'
@@ -14,18 +15,23 @@ export class UserService{
     private apiServerUrl=environment.apiBaseUrl;
     public user: Observable<User>;
     private userSubject: BehaviorSubject<User>;
-    public loggedInUser: User = new User;
+    public loggedInUser: LoginUser = new LoginUser;
 
 
     constructor(private http: HttpClient, private router: Router){
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user') || '{}'));
         this.user = this.userSubject.asObservable();
+        console.log("userservice const");
     }
 
-    public fillLoggedInUser(user: User): void{
+    public fillLoggedInUser(user: LoginUser): void{
             this.loggedInUser = user;
+            console.log("Service logged in user: " + this.loggedInUser.username);
     }
 
+    public getLoggedInUser() : LoginUser{
+        return this.loggedInUser
+    }
 
     public login(user: LoginUser):Observable<boolean>{
        return this.http.post<boolean>(`${this.apiServerUrl}/login`, user);     
