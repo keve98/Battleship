@@ -8,8 +8,7 @@ import { UserService } from '../user_service';
   templateUrl: './playerwelcome.component.html',
   styleUrls: ['./playerwelcome.component.css']
 })
-export class PlayerwelcomeComponent implements AfterViewInit {
-  @ViewChild(LoginComponent) comp: any;
+export class PlayerwelcomeComponent {
 
   username: string | undefined;
   user: LoginUser = new LoginUser;
@@ -18,9 +17,6 @@ export class PlayerwelcomeComponent implements AfterViewInit {
     console.log("welcomecomponent const");
     this.username = loginComponent.username;
     console.log("welcomecomponent const, logincomponent username: " +  loginComponent.username);
-  }
-  ngAfterViewInit(): void {
-    this.username = this.comp.username;
   }
 
 }

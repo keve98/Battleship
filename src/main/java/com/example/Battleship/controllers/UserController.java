@@ -46,7 +46,8 @@ public class UserController {
     public boolean login(@RequestBody UserEntity entity) throws Exception{
         System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            throw new Exception("Authentication failed");
+            //throw new Exception("Authentication failed");
+            return false;
         }
         Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -107,10 +108,7 @@ public class UserController {
         }
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
     }
-
-
-
 }
