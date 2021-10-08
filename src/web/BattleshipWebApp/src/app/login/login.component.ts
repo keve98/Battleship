@@ -30,38 +30,26 @@ export class LoginComponent {
     }
 
 
-    async doLogin() {
+    doLogin() {
         this.username = (<HTMLInputElement>document.getElementById('uname')).value;
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
 
         this.user.username = this.username;
         this.user.password = this.password;
-        this.userService.login(this.user)
-            .subscribe(
-                (isValid) => {
-                    console.log("login started");
-                    if (isValid) {
-                        sessionStorage.setItem('token', btoa(this.username + ':' + this.password));
-                        console.log("login valid");
-                        console.log(this.username);
-                        this.userService.fillLoggedInUser(this.user);
-                        console.log(this.user.username);
-                        
-                    }
-                    else {
-                        alert("bad credentials");
-                        console.log("login invalid");
-                        this.username = "";
-                        this.password = "";
-                        this.user.username = this.username;
-                        this.user.password = this.password;
-
-                    }
-                }
-            );
+       this.userService.login(this.user)
+        .subscribe(
+           (isValid: boolean) => {
+               if(isValid){
+                sessionStorage.setItem('token', btoa(this.username + ':' + this.password));
+               }
+               else{
+                alert("Authentication failed.");
+               }
+           }
+        );      
     }
 
-    async login(): Promise<boolean> {
+    async loginWithPromise(): Promise<boolean> {
         this.username = (<HTMLInputElement>document.getElementById('uname')).value;
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
 
@@ -75,17 +63,20 @@ export class LoginComponent {
         
     }
 
+    getUser(): void{
+        this.userService.getUserByUsername(this.username).subscribe(
+            (user: User) => {
+                this.currentUser = user;
+            }
+        )
+    }
 
-    async doFunction(): Promise<any> {
 
-        await this.doLogin();
+    doFunction() {
+        this.doLogin();
+        this.getUser();
+        this.userService.fillLoggedInUser(this.currentUser);
         this.router.navigate([`/welcome`]);
-
-        /*const success = await this.login();
-        if(success){
-            this.router.navigate([`/welcome`]);
-            return;
-        }*/
 
         
     }

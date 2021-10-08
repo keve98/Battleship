@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { LoginComponent } from '../login';
 import { LoginUser } from '../login/login_user';
+import { User } from '../user';
 import { UserService } from '../user_service';
 
 @Component({
@@ -8,15 +9,15 @@ import { UserService } from '../user_service';
   templateUrl: './playerwelcome.component.html',
   styleUrls: ['./playerwelcome.component.css']
 })
-export class PlayerwelcomeComponent {
+export class PlayerwelcomeComponent implements OnInit {
 
   username: string | undefined;
-  user: LoginUser = new LoginUser;
-
+  public user : LoginUser = new LoginUser;
+  
   constructor(public userService: UserService, public loginComponent : LoginComponent) {
-    console.log("welcomecomponent const");
-    this.username = loginComponent.username;
-    console.log("welcomecomponent const, logincomponent username: " +  loginComponent.username);
+  }
+  ngOnInit(): void {
+    this.username = this.userService.loggedInUser.username;
   }
 
 }

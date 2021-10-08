@@ -33,10 +33,6 @@ export class UserService{
         return this.loggedInUser
     }
 
-    /*public login(user: LoginUser):Observable<boolean>{
-       return this.http.post<boolean>(`${this.apiServerUrl}/login`, user);     
-    }*/
-
     public login(user: LoginUser):Observable<boolean>{
         return this.http.post<boolean>(`${this.apiServerUrl}/login`, user);     
      }
