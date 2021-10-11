@@ -1,13 +1,11 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import { UserService } from "../user_service";
 import { ActivatedRoute, Router } from '@angular/router';
-import AuthService from './auth.service';
 import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
 import { waitForAsync } from "@angular/core/testing";
 import { SelectMultipleControlValueAccessor } from "@angular/forms";
-import { map } from "rxjs/operators";
 
 
 
@@ -23,45 +21,27 @@ export class LoginComponent {
 
     public currentUser: User = new User;
 
-    constructor(private userService: UserService, private router: Router, private route: RouterModule, private authenticationService: AuthService) {
+    constructor(private userService: UserService, private router: Router, private route: RouterModule) {
         this.username = "";
         this.password = "";
         console.log("logincomponent const");
     }
 
 
-    doLogin() {
+   async doLogin() {
         this.username = (<HTMLInputElement>document.getElementById('uname')).value;
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
 
         this.user.username = this.username;
         this.user.password = this.password;
-       this.userService.login(this.user)
+        await this.userService.login(this.user)
         .subscribe(
-           (isValid: boolean) => {
-               if(isValid){
+           (data: User) => {
                 sessionStorage.setItem('token', btoa(this.username + ':' + this.password));
-               }
-               else{
-                alert("Authentication failed.");
-               }
            }
-        );      
+        );         
     }
 
-    async loginWithPromise(): Promise<boolean> {
-        this.username = (<HTMLInputElement>document.getElementById('uname')).value;
-        this.password = (<HTMLInputElement>document.getElementById('psw')).value;
-
-        this.user.username = this.username;
-        this.user.password = this.password;
-
-
-        const result = await this.userService.login(this.user).toPromise();
-        console.log(result);
-        return result;
-        
-    }
 
     getUser(): void{
         this.userService.getUserByUsername(this.username).subscribe(
@@ -72,13 +52,12 @@ export class LoginComponent {
     }
 
 
-    doFunction() {
+    async doFunction() {
+        //this.getUser();
         this.doLogin();
-        this.getUser();
-        this.userService.fillLoggedInUser(this.currentUser);
-        this.router.navigate([`/welcome`]);
 
-        
+        this.router.navigate([`/welcome`]);
+        this.userService.fillLoggedInUser(this.currentUser);
     }
 
 }

@@ -43,17 +43,16 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public boolean login(@RequestBody UserEntity entity) throws Exception{
+    public UserDataEntity login(@RequestBody UserEntity entity) throws Exception{
         System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            //throw new Exception("Authentication failed");
-            return false;
+            throw new Exception("Authentication failed");
         }
         Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        return true;
+        return userService.getUserData(entity.getUsername());
 
     }
 
