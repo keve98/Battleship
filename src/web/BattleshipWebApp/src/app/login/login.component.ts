@@ -1,11 +1,11 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import { UserService } from "../user_service";
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
-import { waitForAsync } from "@angular/core/testing";
-import { SelectMultipleControlValueAccessor } from "@angular/forms";
+import { ThrowStmt } from "@angular/compiler";
+import { PlayerwelcomeComponent } from "../playerwelcome";
 
 
 
@@ -18,13 +18,14 @@ export class LoginComponent {
     username: string;
     password: string;
     user = new LoginUser();
+    isAuthenticated : boolean = true;
+    isAdmin : boolean = false;
 
     public currentUser: User = new User;
 
     constructor(private userService: UserService, private router: Router, private route: RouterModule) {
         this.username = "";
         this.password = "";
-        console.log("logincomponent const");
     }
 
 
@@ -34,17 +35,27 @@ export class LoginComponent {
 
         this.user.username = this.username;
         this.user.password = this.password;
-        await this.userService.login(this.user)
+        await (await this.userService.login(this.user))
         .subscribe(
-           (data: User) => {
-                sessionStorage.setItem('token', btoa(this.username + ':' + this.password));
-           }
-        );         
+            async (isValid : boolean)=>{
+                if(isValid){
+                    sessionStorage.setItem('loggedUser', this.username);
+                    this.isAuthenticated = isValid;
+                    (await this.userService.isAdminOrUser()).subscribe(
+                        (admin: boolean) =>{
+                            this.isAdmin = admin;
+                        }
+                    );
+                }else{
+                    alert("Authentication failed.")
+                    this.isAuthenticated = isValid;
+                }
+            }
+        );        
     }
 
-
-    getUser(): void{
-        this.userService.getUserByUsername(this.username).subscribe(
+    async getUser(){
+        (await this.userService.getUserByUsername(this.username)).subscribe(
             (user: User) => {
                 this.currentUser = user;
             }
@@ -53,11 +64,13 @@ export class LoginComponent {
 
 
     async doFunction() {
-        //this.getUser();
-        this.doLogin();
-
-        this.router.navigate([`/welcome`]);
-        this.userService.fillLoggedInUser(this.currentUser);
+        await this.doLogin();
+        if(!this.isAdmin && this.isAuthenticated){
+          this.router.navigate([`/welcome`]);
+        }
+        if(this.isAdmin && this.isAuthenticated){
+             this.router.navigate([`/admin`])
+        }
     }
 
 }

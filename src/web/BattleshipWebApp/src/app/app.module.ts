@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-
+import { CommonModule } from '@angular/common'; 
 import { AppComponent } from './app.component';
 import { UserService } from './user_service';
 import { LoginComponent } from './login';
@@ -21,7 +21,8 @@ import { PlayerwelcomeComponent } from './playerwelcome/playerwelcome.component'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

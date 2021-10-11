@@ -1,7 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { LoginComponent } from '../login';
-import { LoginUser } from '../login/login_user';
-import { User } from '../user';
+import {Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../user_service';
 
 @Component({
@@ -11,13 +9,19 @@ import { UserService } from '../user_service';
 })
 export class PlayerwelcomeComponent implements OnInit {
 
-  username: string | undefined;
-  public user : LoginUser = new LoginUser;
+  username : string = "";
   
-  constructor(public userService: UserService, public loginComponent : LoginComponent) {
+  constructor(public userService: UserService, public router: Router) {
+    this.username = sessionStorage.getItem('loggedUser')!;
   }
+
   ngOnInit(): void {
-    this.username = this.userService.loggedInUser.username;
+    this.username = sessionStorage.getItem('loggedUser')!;
+  }
+
+  navigateToPlayerData(): void
+  {
+    this.router.navigate([`/player`]);
   }
 
 }

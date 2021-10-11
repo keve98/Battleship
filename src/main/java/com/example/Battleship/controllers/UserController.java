@@ -43,16 +43,19 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public UserDataEntity login(@RequestBody UserEntity entity) throws Exception{
+    public boolean login(@RequestBody UserEntity entity) throws Exception{
         System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            throw new Exception("Authentication failed");
+            //throw new Exception("Authentication failed");
+            return false;
         }
         Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        return userService.getUserData(entity.getUsername());
+        this.username = entity.getUsername();
+
+        return true;
 
     }
 
@@ -92,19 +95,31 @@ public class UserController {
 
     @GetMapping("/user/{name}")
     public ResponseEntity<UserDataEntity> getUserByUsername(@PathVariable String name) throws Exception {
-        System.out.println("getuserbyname start");
-        boolean authenticated = false;
-        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals(name))
-            authenticated = true;
-        if(authenticated || isAdmin()) {
-            if(authenticated && isAdmin()){
-                throw new Exception("Admins haven't got personal data in the database");
-            }else {
-                return new ResponseEntity<>(userService.getUserData(name), HttpStatus.OK);
+            System.out.println("getuserbyname start");
+            boolean authenticated = false;
+            if (this.username.equals(name))
+                authenticated = true;
+            if (authenticated || isAdmin()) {
+                if (authenticated && isAdmin()) {
+                    throw new Exception("Admins haven't got personal data in the database");
+                } else {
+                    System.out.println("return personal data for user");
+                    return new ResponseEntity<>(userService.getUserData(name), HttpStatus.OK);
+                }
+            } else {
+                throw new Exception("You don't have access to reach this page!");
             }
-        }else{
-            throw new Exception("You don't have access to reach this page!");
-        }
+    }
+
+    @GetMapping("/logout")
+    public void logout(){
+        this.username = "";
+        SecurityContextHolder.clearContext();
+    }
+
+    @GetMapping("/isAdmin")
+    public boolean isAdminOrUser(){
+        return isAdmin();
     }
 
     public boolean isAdmin() {

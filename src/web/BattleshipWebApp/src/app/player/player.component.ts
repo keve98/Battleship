@@ -1,7 +1,6 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import { User } from "../user";
 import { UserService } from "../user_service";
-import { LoginComponent } from "../login";
 import { LoginUser } from "../login/login_user";
 
 
@@ -12,19 +11,23 @@ import { LoginUser } from "../login/login_user";
 export class PlayerComponent implements OnInit{
 
    public user : LoginUser = new LoginUser;
-   public userData: User | undefined;
-   username: string = "";
+   public userData: User = new User;
+   public username:string = "";
 
-    constructor(private userService: UserService, private loginComponent: LoginComponent){
+    constructor(private userService: UserService){
     }
 
 
-    ngOnInit(): void {
-        this.user = this.userService.loggedInUser;
-        
-        this.userService.getUserByUsername(this.user.username!).subscribe(
+   ngOnInit(){
+       console.log("personal data init");
+        this.username = sessionStorage.getItem('loggedUser')!;
+        console.log("personal data username: " + this.username);
+        (this.userService.getUserByUsername(this.username)).subscribe(
             (user)=>{
-                this.userData = user;
+                this.userData.name = user.name;
+                this.userData.phone = user.phone;
+                this.userData.email = user.email;
+                this.userData.address = user.address;
             }
         )
     }

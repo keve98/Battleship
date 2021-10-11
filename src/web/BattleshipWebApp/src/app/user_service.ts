@@ -33,12 +33,13 @@ export class UserService{
         return this.loggedInUser
     }
 
-    public login(user: LoginUser):Observable<User>{
-        return this.http.post<User>(`${this.apiServerUrl}/login`, user);     
+    async login(user: LoginUser):Promise<Observable<boolean>>{
+        const t = await this.http.post<boolean>(`${this.apiServerUrl}/login`, user)
+        return t;     
      }
 
 
-    savaUserData(user: User): Observable<any> {
+    public savaUserData(user: User): Observable<any> {
         return this.http.post<any>(`${this.apiServerUrl}/save`, user);
       }
     
@@ -49,6 +50,16 @@ export class UserService{
 
 
     public getUserByUsername(username: string): Observable<User>{
-        return this.http.get<User>(`${this.apiServerUrl}/user/${username}`);
+        const t = this.http.get<User>(`${this.apiServerUrl}/user/${username}`)
+        return t;
+    }
+
+    public logout(){
+        this.http.get(`${this.apiServerUrl}/logout`);
+    }
+
+    async  isAdminOrUser():Promise<Observable<boolean>>{
+        const t = this.http.get<boolean>(`${this.apiServerUrl}/isAdmin`)
+        return t;
     }
 }
