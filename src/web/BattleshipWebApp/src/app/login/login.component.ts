@@ -69,9 +69,8 @@ export class LoginComponent {
           this.router.navigate([`/welcome`]);
         }
         if(this.isAdmin && this.isAuthenticated){
-             this.router.navigate([`/admin`])
+             this.router.navigate([`/adminwelcome`])
         }
     }
-
 }
 

@@ -9,6 +9,7 @@ import { LoginComponent } from './login';
 import { AdminComponent } from './admin';
 import { PlayerComponent } from './player';
 import { PlayerwelcomeComponent } from './playerwelcome/playerwelcome.component';
+import { AdminwelcomeComponent } from './adminwelcome/adminwelcome.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PlayerwelcomeComponent } from './playerwelcome/playerwelcome.component'
     LoginComponent,
     AdminComponent,
     PlayerComponent,
-    PlayerwelcomeComponent
+    PlayerwelcomeComponent,
+    AdminwelcomeComponent
   ],
   imports: [
     BrowserModule,
