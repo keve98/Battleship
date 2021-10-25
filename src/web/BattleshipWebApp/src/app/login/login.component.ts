@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
-import { ThrowStmt } from "@angular/compiler";
-import { PlayerwelcomeComponent } from "../playerwelcome";
+
 
 
 

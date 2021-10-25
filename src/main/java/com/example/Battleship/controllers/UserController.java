@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +29,7 @@ public class UserController {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     public String username;
     public String password;
+    String princ;
 
 
     @Autowired
@@ -46,12 +48,11 @@ public class UserController {
     public boolean login(@RequestBody UserEntity entity) throws Exception{
         System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            //throw new Exception("Authentication failed");
             return false;
         }
         Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        princ = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         this.username = entity.getUsername();
 
@@ -87,9 +88,13 @@ public class UserController {
 
     @GetMapping("/admin")
     public ResponseEntity<List<UserDataEntity>> getAllUsers() throws Exception {
-        if(isAdmin())
-            return new ResponseEntity<>(userService.getUsersOnly(), HttpStatus.OK);
-       throw new Exception("You don't have access to reach this page!");
+       // if(isAdmin()) {
+        List<UserDataEntity> users = new ArrayList();
+        users = userService.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+       // }else {
+        //    throw new Exception("You don't have access to reach this page!");
+        //}
     }
 
 
@@ -111,9 +116,22 @@ public class UserController {
             }
     }
 
+    @GetMapping("/searchUsernames/{username}")
+    public ResponseEntity<List<UserDataEntity>> searchUsernames(@PathVariable String username) throws Exception{
+       // if(isAdmin()){
+         //   System.out.println("search username: " + username);
+        List<UserDataEntity> list = new ArrayList();
+        list = userService.searchUsernames(username);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+        //}else{
+         //   throw new Exception("You havent got an admin principle.");
+        //}
+    }
+
     @GetMapping("/logout")
     public void logout(){
         this.username = "";
+        this.princ = "";
         SecurityContextHolder.clearContext();
     }
 
@@ -123,6 +141,6 @@ public class UserController {
     }
 
     public boolean isAdmin() {
-        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
+        return princ.equals("admin");
     }
 }

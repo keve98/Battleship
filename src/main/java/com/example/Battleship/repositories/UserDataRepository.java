@@ -21,5 +21,8 @@ public interface UserDataRepository extends CrudRepository<UserDataEntity, Long>
             "where r.name = 'USER' and d.username = e.username and e.id = r.id")
     List<UserDataEntity> findUsersOnly();
 
+    @Query(value = "select distinct u from UserDataEntity u where u.username like %:txt%")
+    List<UserDataEntity> searchUsernames(@Param("txt") String txt);
+
 
 }

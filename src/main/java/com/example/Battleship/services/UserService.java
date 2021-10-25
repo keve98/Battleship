@@ -45,6 +45,7 @@ public class UserService {
     }
 
     public List<UserDataEntity> getUsersOnly(){return userDataRepository.findUsersOnly();}
+    public List<UserDataEntity> findAll(){return userDataRepository.findAll();}
 
     public void saveUserData(UserDataEntity userDataEntity){
         userDataRepository.save(userDataEntity);
@@ -66,6 +67,10 @@ public class UserService {
         }else{
             return false;
         }
+    }
+
+    public List<UserDataEntity> searchUsernames(String name){
+        return userDataRepository.searchUsernames(name);
     }
 
 

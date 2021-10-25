@@ -59,7 +59,12 @@ export class UserService{
     }
 
     async  isAdminOrUser():Promise<Observable<boolean>>{
-        const t = this.http.get<boolean>(`${this.apiServerUrl}/isAdmin`)
+        const t = await this.http.get<boolean>(`${this.apiServerUrl}/isAdmin`)
+        return t;
+    }
+
+    async searchUsernames(username: string): Promise<Observable<User[]>>{
+        const t = await this.http.get<User[]>(`${this.apiServerUrl}/searchUsernames/${username}`);
         return t;
     }
 }

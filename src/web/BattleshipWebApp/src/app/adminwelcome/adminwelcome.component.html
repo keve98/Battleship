@@ -1,1 +1,25 @@
-<p>adminwelcome works!</p>
+<h1>Welcome, {{this.username}}!</h1>
+
+<body>
+    <button (click)="displayUsers()">Users</button>
+    <input type="text" id="searchUser" placeholder="Enter username...">
+    <button (click)="searchForUser()">Search</button>
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Address</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{user.name}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.phone}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.address}}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
