@@ -34,6 +34,7 @@ export class UserService{
     }
 
     async login(user: LoginUser):Promise<Observable<boolean>>{
+        alert("Login...");
         const t = await this.http.post<boolean>(`${this.apiServerUrl}/login`, user)
         return t;     
      }
@@ -63,8 +64,8 @@ export class UserService{
         return t;
     }
 
-    async searchUsernames(username: string): Promise<Observable<User[]>>{
-        const t = await this.http.get<User[]>(`${this.apiServerUrl}/searchUsernames/${username}`);
+    searchUsernames(username: string): Observable<User[]>{
+        const t = this.http.get<User[]>(`${this.apiServerUrl}/searchUsernames/${username}`);
         return t;
     }
 }

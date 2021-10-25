@@ -23,6 +23,7 @@ export class AdminwelcomeComponent implements OnInit {
 
 
   displayUsers(){
+    this.users?.splice(0, this.users.length);
     this.userService.getAllUsers().subscribe(
       (u: User[]) =>{
         this.users = u;
@@ -32,11 +33,10 @@ export class AdminwelcomeComponent implements OnInit {
     })
   }
 
-  async searchForUser(){
-    var tmp : User[];
-    this.users = tmp!;
+  public searchForUser(){
+    this.users = [];
     var searchUser = (<HTMLInputElement>document.getElementById('searchUser')).value;
-    await (await this.userService.searchUsernames(searchUser)).subscribe(
+     (this.userService.searchUsernames(searchUser)).subscribe(
       (u: User[]) =>{
         this.users = u;
         if(this.users.length == 0){

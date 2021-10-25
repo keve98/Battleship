@@ -88,13 +88,13 @@ public class UserController {
 
     @GetMapping("/admin")
     public ResponseEntity<List<UserDataEntity>> getAllUsers() throws Exception {
-       // if(isAdmin()) {
+        if(isAdmin()) {
         List<UserDataEntity> users = new ArrayList();
-        users = userService.findAll();
+        users = userService.getUsersOnly();
         return new ResponseEntity<>(users, HttpStatus.OK);
-       // }else {
-        //    throw new Exception("You don't have access to reach this page!");
-        //}
+        }else {
+            throw new Exception("You don't have access to reach this page!");
+        }
     }
 
 
@@ -118,14 +118,14 @@ public class UserController {
 
     @GetMapping("/searchUsernames/{username}")
     public ResponseEntity<List<UserDataEntity>> searchUsernames(@PathVariable String username) throws Exception{
-       // if(isAdmin()){
-         //   System.out.println("search username: " + username);
-        List<UserDataEntity> list = new ArrayList();
-        list = userService.searchUsernames(username);
-        return new ResponseEntity<>(list, HttpStatus.OK);
-        //}else{
-         //   throw new Exception("You havent got an admin principle.");
-        //}
+        if(isAdmin()){
+            System.out.println("search username: " + username);
+            List<UserDataEntity> list = new ArrayList();
+            list = userService.searchUsernames(username);
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }else{
+            throw new Exception("You havent got an admin principle.");
+        }
     }
 
     @GetMapping("/logout")

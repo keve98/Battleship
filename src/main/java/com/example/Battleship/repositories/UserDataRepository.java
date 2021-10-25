@@ -17,11 +17,11 @@ public interface UserDataRepository extends CrudRepository<UserDataEntity, Long>
     @Query(value = "select u from UserDataEntity u order by u.username")
     List<UserDataEntity> findAll();
 
-    @Query(value = "select distinct d.username, d.name, d.address, d.phone, d.email from UserDataEntity d, UserEntity e, RoleEntity r\n" +
+    @Query(value = "select distinct d from UserDataEntity d, UserEntity e, RoleEntity r\n" +
             "where r.name = 'USER' and d.username = e.username and e.id = r.id")
     List<UserDataEntity> findUsersOnly();
 
-    @Query(value = "select distinct u from UserDataEntity u where u.username like %:txt%")
+    @Query(value = "select distinct u from UserDataEntity u where u.username like :txt%")
     List<UserDataEntity> searchUsernames(@Param("txt") String txt);
 
 

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
+import { ThrowStmt } from "@angular/compiler";
 
 
 
@@ -16,7 +17,11 @@ export class LoginComponent {
 
     username: string;
     password: string;
+
+
     user = new LoginUser();
+    routing: string = "";
+    
     isAuthenticated : boolean = true;
     isAdmin : boolean = false;
 
@@ -34,7 +39,7 @@ export class LoginComponent {
 
         this.user.username = this.username;
         this.user.password = this.password;
-        await (await this.userService.login(this.user))
+        (await this.userService.login(this.user))
         .subscribe(
             async (isValid : boolean)=>{
                 if(isValid){
@@ -43,14 +48,21 @@ export class LoginComponent {
                     (await this.userService.isAdminOrUser()).subscribe(
                         (admin: boolean) =>{
                             this.isAdmin = admin;
-                        }
+                            if(this.isAdmin){
+                                alert("Redirect to admin page...");
+                                this.router.navigate([`/adminwelcome`])
+                            }else{
+                                this.router.navigate([`/welcome`]);
+                            }
+                    }
                     );
                 }else{
                     alert("Authentication failed.")
                     this.isAuthenticated = isValid;
-                }
+                    this.router.navigate([`/login`]);                }
             }
-        );        
+        );
+            
     }
 
     async getUser(){
@@ -64,12 +76,11 @@ export class LoginComponent {
 
     async doFunction() {
         await this.doLogin();
-        if(!this.isAdmin && this.isAuthenticated){
           this.router.navigate([`/welcome`]);
-        }
-        if(this.isAdmin && this.isAuthenticated){
-             this.router.navigate([`/adminwelcome`])
-        }
+    }
+
+    public routeTo(url: string){
+        this.router.navigate([url]);
     }
 }
 
