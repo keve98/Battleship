@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
-import { ThrowStmt } from "@angular/compiler";
 
 
 
@@ -33,7 +32,8 @@ export class LoginComponent {
     }
 
 
-   async doLogin() {
+
+    async doLogin() {
         this.username = (<HTMLInputElement>document.getElementById('uname')).value;
         this.password = (<HTMLInputElement>document.getElementById('psw')).value;
 
@@ -75,8 +75,8 @@ export class LoginComponent {
 
 
     async doFunction() {
-        await this.doLogin();
-          this.router.navigate([`/welcome`]);
+        this.doLogin();
+        this.router.navigate([`/welcome`]);
     }
 
     public routeTo(url: string){
