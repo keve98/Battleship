@@ -74,6 +74,15 @@ public class UserService {
     }
 
 
+    public String getRoleIdFromUserId(Long id){
+        return userRoleRepository.getRoleIdFromUserId(id);
+    }
+
+    public String getRoleNameFromId(Integer id){
+        return roleRepository.getRoleNameFromID(id);
+    }
+
+
 
 
 }

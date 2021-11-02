@@ -10,4 +10,7 @@ public interface RoleRepository extends CrudRepository<RoleEntity, Integer> {
 
     @Query(value = "select m from RoleEntity m where m.name like :#{#txt}")
     RoleEntity findByName(@Param("txt") String txt);
+
+    @Query(value="select m.name from RoleEntity m where m.id = :id")
+    String getRoleNameFromID(@Param("id") Integer id);
 }

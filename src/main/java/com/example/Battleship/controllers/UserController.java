@@ -45,18 +45,26 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public boolean login(@RequestBody UserEntity entity) throws Exception{
+    public UserRole login(@RequestBody UserEntity entity) throws Exception{
         System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            return false;
+            throw new Exception("Bad credentials.");
         }
+
+        UserEntity ret = userService.getEntity(entity.getUsername());
+        String userroleid = userService.getRoleIdFromUserId(ret.getId());
+        String principlename = userService.getRoleNameFromId(Integer.parseInt(userroleid));
+        UserRole userroleentity = new UserRole();
+        userroleentity.setPrinciple(principlename);
+        userroleentity.setUsername(entity.getUsername());
+        userroleentity.setUserid(Long.parseLong(userroleid));
+        userroleentity.setRoleid(Long.parseLong(userroleid));
         Authentication authentication = new UsernamePasswordAuthenticationToken(entity.getUsername(), entity.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         princ = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         this.username = entity.getUsername();
 
-        return true;
+        return userroleentity;
 
     }
 

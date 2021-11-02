@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 
 import { LoginUser } from './login/login_user';
 import { PlayerwelcomeComponent } from './playerwelcome';
+import { UserRole } from './login/userRole';
 
 @Injectable({
     providedIn: 'root'
@@ -33,10 +34,10 @@ export class UserService{
         return this.loggedInUser
     }
 
-    async login(user: LoginUser):Promise<Observable<boolean>>{
+    login(user: LoginUser):Promise<UserRole>{
         alert("Login...");
-        const t = await this.http.post<boolean>(`${this.apiServerUrl}/login`, user)
-        return t;     
+        return this.http.post<UserRole>(`${this.apiServerUrl}/login`, user).toPromise();
+             
      }
 
 

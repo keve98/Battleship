@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
+import { UserRole } from "./userRole";
+import { first, take } from 'rxjs/operators';
 
 
 
@@ -39,30 +41,32 @@ export class LoginComponent {
 
         this.user.username = this.username;
         this.user.password = this.password;
-        (await this.userService.login(this.user))
-        .subscribe(
-            async (isValid : boolean)=>{
-                if(isValid){
-                    sessionStorage.setItem('loggedUser', this.username);
-                    this.isAuthenticated = isValid;
-                    (await this.userService.isAdminOrUser()).subscribe(
-                        (admin: boolean) =>{
-                            this.isAdmin = admin;
-                            if(this.isAdmin){
-                                alert("Redirect to admin page...");
-                                this.router.navigate([`/adminwelcome`])
-                            }else{
-                                this.router.navigate([`/welcome`]);
-                            }
-                    }
-                    );
+        this.userService.login(this.user)
+        .then(
+            (user : UserRole)=>{
+                sessionStorage.setItem('loggedUser', this.username);
+                this.isAuthenticated = true;
+                if(user.principle === "ADMIN"){
+                    alert("ADMIN principle, redirect to admin page");
+                    this.reloadPage("/adminwelcome");
+                    this.isAdmin = true;
                 }else{
-                    alert("Authentication failed.")
-                    this.isAuthenticated = isValid;
-                    this.router.navigate([`/login`]);                }
+                    this.isAdmin = false;
+                    this.reloadPage("/welcome");
+                }
+            },error=>{
+                this.reloadPage("/login");
+                alert("Bad credentials, try again.");
             }
         );
-            
+      
+    }
+
+    reloadPage(url: String){
+        this.router.navigate([`${url}`])
+            .then(() => {
+    window.location.reload();
+  });
     }
 
     async getUser(){
@@ -75,12 +79,9 @@ export class LoginComponent {
 
 
     async doFunction() {
-        this.doLogin();
-        this.router.navigate([`/welcome`]);
+       await this.doLogin();
+       this.router.navigate([`/welcome`]);
     }
 
-    public routeTo(url: string){
-        this.router.navigate([url]);
-    }
 }
 
