@@ -1,5 +1,5 @@
 import {User} from './user';
-import { Injectable } from "@angular/core";
+import { ANALYZE_FOR_ENTRY_COMPONENTS, Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
@@ -34,9 +34,9 @@ export class UserService{
         return this.loggedInUser
     }
 
-    login(user: LoginUser):Promise<UserRole>{
-        alert("Login...");
-        return this.http.post<UserRole>(`${this.apiServerUrl}/login`, user).toPromise();
+    public login(user: LoginUser):Observable<UserRole>{
+        var t = this.http.post<UserRole>(`${this.apiServerUrl}/login`, user);
+        return t;
              
      }
 
