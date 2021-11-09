@@ -1,6 +1,8 @@
 package com.example.Battleship.entities;
 
 
+import jdk.jfr.TransitionFrom;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +16,9 @@ public class UserRole {
     @Column(name = "role_id")
     public Long roleid;
 
+    @Transient
     public String username;
+    @Transient
     public String principle;
 
     public UserRole(Long userid, Long roleid){

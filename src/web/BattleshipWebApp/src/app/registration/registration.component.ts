@@ -20,8 +20,14 @@ export class RegistrationComponent{
         this.user.email = (<HTMLInputElement>document.getElementById('email')).value;
 
         this.userService.savaUserData(this.user).subscribe(
-            data => console.log("response received"),
-            error => console.log("error occured")
+            (data : User) => {
+                alert("Registration successful for user: " + this.user.username);
+                this.router.navigate([`/login`]);
+            },
+            (error) => {
+                alert("Something went wrong, try again.");
+                this.router.navigate([`/registration`]);
+            }
         );
 
     }

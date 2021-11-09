@@ -40,21 +40,25 @@ export class LoginComponent {
 
         this.user.username = this.username;
         this.user.password = this.password;
-        await this.userService.login(this.user)
-        .subscribe(
-            (user : UserRole)=>{
-                if(user.principle === "ADMIN"){
-                    this.reloadPage("/adminwelcome");
-                    this.isAdmin = true;
-                }else{
-                    this.isAdmin = false;
-                    this.reloadPage("/welcome");
+        this.userService.login(this.user)
+            .subscribe(
+                (user: UserRole) => {
+                    if (user.principle === "ADMIN") {
+                        this.reloadPage("/adminwelcome");
+                        this.isAdmin = true;
+                    } else {
+                        this.isAdmin = false;
+                        this.reloadPage("/welcome");
+                    }
+                    console.log(user.principle);
+                    sessionStorage.setItem('loggedUser', this.username);
+                    this.isAuthenticated = true;
+                },
+                (error) =>{
+                    alert("Bad credentials!");
+                    this.reloadPage("/login");
                 }
-                console.log(user.principle);
-                sessionStorage.setItem('loggedUser', this.username);
-                this.isAuthenticated = true;
-            }
-        );
+            );
       
     }
 
