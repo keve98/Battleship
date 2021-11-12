@@ -21,7 +21,7 @@ export class RegistrationComponent{
 
         this.userService.savaUserData(this.user).subscribe(
             (data : User) => {
-                alert("Registration successful for user: " + this.user.username);
+                alert("Registration successful. We sent an email with your verification link. Please click on it to complete the registration.");
                 this.router.navigate([`/login`]);
             },
             (error) => {
@@ -29,6 +29,8 @@ export class RegistrationComponent{
                 this.router.navigate([`/registration`]);
             }
         );
+
+        this.router.navigate([`/`]);
 
     }
 }

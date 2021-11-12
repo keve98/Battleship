@@ -40,6 +40,10 @@ export class UserService{
              
      }
 
+     public verify(code: String): Observable<User>{
+        return this.http.get<User>(`${this.apiServerUrl}/verify/${code}`)
+     }
+
 
     public savaUserData(user: User): Observable<any> {
         return this.http.post<any>(`${this.apiServerUrl}/save`, user);

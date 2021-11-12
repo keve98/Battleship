@@ -5,6 +5,7 @@ import { LoginUser } from "./login_user";
 import { User } from "../user";
 import { RouterModule, Routes } from '@angular/router';
 import { UserRole } from "./userRole";
+import { HttpErrorResponse } from "@angular/common/http";
 
 
 
@@ -55,7 +56,7 @@ export class LoginComponent {
                     this.isAuthenticated = true;
                 },
                 (error) =>{
-                    alert("Bad credentials!");
+                    alert(error.status);
                     this.reloadPage("/login");
                 }
             );

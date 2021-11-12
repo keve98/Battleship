@@ -10,6 +10,9 @@ import { AdminComponent } from './admin';
 import { PlayerComponent } from './player';
 import { PlayerwelcomeComponent } from './playerwelcome/playerwelcome.component';
 import { AdminwelcomeComponent } from './adminwelcome/adminwelcome.component';
+import { VerifyComponent } from './verify/verify.component';
+import { VerifySuccessfulComponent } from './verify-successful/verify-successful.component';
+import { VerifyNotSuccessfulComponent } from './verify-not-successful/verify-not-successful.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { AdminwelcomeComponent } from './adminwelcome/adminwelcome.component';
     AdminComponent,
     PlayerComponent,
     PlayerwelcomeComponent,
-    AdminwelcomeComponent
+    AdminwelcomeComponent,
+    VerifyComponent,
+    VerifySuccessfulComponent,
+    VerifyNotSuccessfulComponent
   ],
   imports: [
     BrowserModule,

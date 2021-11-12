@@ -7,6 +7,7 @@ export class User{
     phone: string;
     email: string;
     address: string;
+    verification_code: string;
 
     constructor(){
         this.name = "";
@@ -15,5 +16,6 @@ export class User{
         this.phone = "";
         this.email = "";
         this.address = "";
+        this.verification_code = "";
     }
 }

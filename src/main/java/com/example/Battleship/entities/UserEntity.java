@@ -21,6 +21,9 @@ public class UserEntity {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @Column(name = "verification_code")
+    private String verificatonCode;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -81,4 +84,11 @@ public class UserEntity {
         this.roleEntities = roleEntities;
     }
 
+    public String getVerificatonCode() {
+        return verificatonCode;
+    }
+
+    public void setVerificatonCode(String verificatonCode) {
+        this.verificatonCode = verificatonCode;
+    }
 }

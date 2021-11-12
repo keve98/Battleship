@@ -17,7 +17,6 @@ export class AdminComponent implements OnInit {
   public getUsers(): void {
 
     this.userService.getAllUsers().subscribe(
-
       (response: User[]) => {
         this.users = response;
 
