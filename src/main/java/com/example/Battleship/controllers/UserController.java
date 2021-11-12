@@ -56,7 +56,6 @@ public class UserController {
             throw new Exception("Bad credentials");
         }
 
-
         UserEntity ret = userService.getEntity(entity.getUsername());
 
         if(!ret.isEnabled()){
@@ -178,10 +177,6 @@ public class UserController {
         return isAdmin();
     }
 
-    @GetMapping("/spam")
-    public void sendSpam() throws MessagingException, UnsupportedEncodingException {
-        userService.sendSpam();
-    }
 
     public boolean isAdmin() {
         return princ.equals("admin");

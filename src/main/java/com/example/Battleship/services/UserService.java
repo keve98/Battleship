@@ -119,39 +119,6 @@ public class UserService {
         mailSender.send(message);
     }
 
-    public void sendSpam() throws MessagingException, UnsupportedEncodingException {
-        String toAddress = "mucsirobert01@gmail.com";
-        String fromAddress = "bmestudent07@gmail.com";
-        String senderName = "Battleship";
-        String subject = "Szia Lajos";
-
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        helper.setFrom(fromAddress, senderName);
-        helper.setTo(toAddress);
-        helper.setSubject(subject);
-
-
-        //String verifyURL = "http://localhost:4200/#" + "/verify/" + user.getVerificatonCode();
-
-        String content = "Anyád";
-
-        helper.setText(content, true);
-
-        mailSender.send(message);
-
-        toAddress = "kocsilevi@gmail.com";
-        helper.setTo(toAddress);
-        mailSender.send(message);
-
-        toAddress = "bazsarmartin1@gmail.com";
-        helper.setTo(toAddress);
-        mailSender.send(message);
-
-    }
-
     public void verify(String code){
         userRepository.verify(code);
     }
