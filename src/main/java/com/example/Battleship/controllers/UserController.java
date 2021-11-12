@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 
 
 import javax.mail.MessagingException;
@@ -52,12 +53,15 @@ public class UserController {
     public UserRole login(@RequestBody UserEntity entity) throws Exception{
         System.out.println("login start");
         if(!userService.login(entity.getUsername(), entity.getPassword())){
-            throw new Exception("Bad credentials.");
+            throw new Exception("Bad credentials");
         }
 
 
         UserEntity ret = userService.getEntity(entity.getUsername());
-        if(!ret.isEnabled()){throw new Exception("Your account is not verified yet. Please check your emails."); }
+
+        if(!ret.isEnabled()){
+            throw new Exception("Your account is not verified yet. Please check your emails.");
+        }
         String userroleid = userService.getRoleIdFromUserId(ret.getId());
         String principlename = userService.getRoleNameFromId(Integer.parseInt(userroleid));
         UserRole userroleentity = new UserRole();

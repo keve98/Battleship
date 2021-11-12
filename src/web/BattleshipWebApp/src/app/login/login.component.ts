@@ -56,7 +56,7 @@ export class LoginComponent {
                     this.isAuthenticated = true;
                 },
                 (error) =>{
-                    alert(error.status);
+                    alert(JSON.stringify(error));
                     this.reloadPage("/login");
                 }
             );
